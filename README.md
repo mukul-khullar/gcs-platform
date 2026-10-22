@@ -6,5 +6,5 @@ Custom MAVLink ground control station with a companion-computer intelligence lay
 
 1. Clone the repository and bootstrap the environment:
    ```bash
-   git clone <your-repo-url> gcs-platform && cd gcs-platform
+   git clone https://github.com/mukul-khullar/gcs-platform.git gcs-platform && cd gcs-platform
    make bootstrap
