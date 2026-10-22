@@ -1,0 +1,66 @@
+name: wind_gust_wp_mission
+duration_s: 40.0
+home:
+  lat_deg: 37.4000
+  lon_deg: -122.0800
+  alt_m: 20.0
+  yaw_deg: 0.0
+vehicle_params:
+  SIM_WIND_SPD: 8.0
+  FENCE_ENABLE: 1
+timeline:
+  - t_s: 0.0
+    action:
+      type: command
+      name: set_mode_guided
+  - t_s: 1.0
+    action:
+      type: command
+      name: arm
+  - t_s: 2.0
+    action:
+      type: command
+      name: takeoff
+      alt_rel_m: 12.0
+  - t_s: 7.0
+    action:
+      type: wait_for
+      condition: takeoff_complete
+      timeout_s: 10.0
+  - t_s: 9.0
+    action:
+      type: set_param
+      param: SIM_WIND_SPD
+      value: 12.0
+  - t_s: 10.0
+    action:
+      type: command
+      name: goto
+      north_m: 15.0
+      east_m: 0.0
+      alt_rel_m: 12.0
+  - t_s: 14.0
+    action:
+      type: command
+      name: goto
+      north_m: 15.0
+      east_m: 12.0
+      alt_rel_m: 12.0
+  - t_s: 18.0
+    action:
+      type: command
+      name: goto
+      north_m: 0.0
+      east_m: 12.0
+      alt_rel_m: 12.0
+  - t_s: 22.0
+    action:
+      type: command
+      name: goto
+      north_m: 0.0
+      east_m: 0.0
+      alt_rel_m: 12.0
+  - t_s: 26.0
+    action:
+      type: command
+      name: rtl

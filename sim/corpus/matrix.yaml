@@ -1,0 +1,42 @@
+seed: 20261022
+sitl_speedup: 4
+duration_s: 70
+scenarios:
+  - ../scenarios/nominal_square.yaml
+  - ../scenarios/wind_gust_wp_mission.yaml
+  - ../scenarios/gps_loss_at_40s.yaml
+mission_shapes: [square, triangle, racetrack]
+nominal_runs: 30
+wind_speed_range_mps: [0, 8]
+fault_onsets_s: [20, 40]
+faults:
+  gps_loss:
+    expected_signals: [GPS_RAW_INT.fix_type]
+    severities:
+      low: {assignments: {SIM_GPS_DISABLE: 1}, duration_s: 8}
+      high: {assignments: {SIM_GPS_DISABLE: 1}, duration_s: 20}
+  compass_offset:
+    expected_signals: [EKF_STATUS_REPORT.compass_variance]
+    severities:
+      low: {assignments: {SIM_MAG1_OFS_X: 60, SIM_MAG1_OFS_Y: 0, SIM_MAG1_OFS_Z: 0}, duration_s: 12}
+      high: {assignments: {SIM_MAG1_OFS_X: 250, SIM_MAG1_OFS_Y: -100, SIM_MAG1_OFS_Z: 50}, duration_s: 20}
+  vibration:
+    expected_signals: [VIBRATION.vibration_x, VIBRATION.vibration_y, VIBRATION.vibration_z]
+    severities:
+      low: {assignments: {SIM_ACC_RND: 1}, duration_s: 12}
+      high: {assignments: {SIM_ACC_RND: 3}, duration_s: 20}
+  baro_drift:
+    expected_signals: [EKF_STATUS_REPORT.pos_vert_variance]
+    severities:
+      low: {assignments: {SIM_BARO_DRIFT: 0.25}, duration_s: 12}
+      high: {assignments: {SIM_BARO_DRIFT: 1}, duration_s: 20}
+  battery_sag:
+    expected_signals: [SYS_STATUS.voltage_battery]
+    severities:
+      low: {assignments: {SIM_BATT_VOLTAGE: 11}, duration_s: 12}
+      high: {assignments: {SIM_BATT_VOLTAGE: 9}, duration_s: 20}
+  rc_loss:
+    expected_signals: [RC_CHANNELS.channels]
+    severities:
+      low: {assignments: {SIM_RC_FAIL: 2}, duration_s: 12}
+      high: {assignments: {SIM_RC_FAIL: 1}, duration_s: 20}

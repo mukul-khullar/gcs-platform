@@ -1,0 +1,62 @@
+name: nominal_square
+duration_s: 30.0
+home:
+  lat_deg: 37.4000
+  lon_deg: -122.0800
+  alt_m: 20.0
+  yaw_deg: 0.0
+vehicle_params:
+  SIM_WIND_SPD: 0.0
+  FENCE_ENABLE: 1
+  EK2_GPS_TYPE: 0
+timeline:
+  - t_s: 0.0
+    action:
+      type: command
+      name: set_mode_guided
+  - t_s: 1.0
+    action:
+      type: command
+      name: arm
+  - t_s: 2.0
+    action:
+      type: command
+      name: takeoff
+      alt_rel_m: 10.0
+  - t_s: 6.0
+    action:
+      type: wait_for
+      condition: takeoff_complete
+      timeout_s: 10.0
+  - t_s: 8.0
+    action:
+      type: command
+      name: goto
+      north_m: 0.0
+      east_m: 0.0
+      alt_rel_m: 10.0
+  - t_s: 12.0
+    action:
+      type: command
+      name: goto
+      north_m: 10.0
+      east_m: 0.0
+      alt_rel_m: 10.0
+  - t_s: 16.0
+    action:
+      type: command
+      name: goto
+      north_m: 10.0
+      east_m: 10.0
+      alt_rel_m: 10.0
+  - t_s: 20.0
+    action:
+      type: command
+      name: goto
+      north_m: 0.0
+      east_m: 10.0
+      alt_rel_m: 10.0
+  - t_s: 24.0
+    action:
+      type: command
+      name: land

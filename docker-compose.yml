@@ -2,13 +2,42 @@ version: '3.8'
 
 services:
   sitl:
-    image: python:3.11-slim
+    build:
+      context: ./sim
+      dockerfile: docker/Dockerfile
+      args:
+        COPTER_TAG: ${COPTER_TAG:-Copter-4.7.2}
+    image: gcs-sitl:${COPTER_TAG:-Copter-4.7.2}
     container_name: gcs_sitl
-    ports:
-      - "14551:14551/udp"
-      - "14552:14552/udp"
-      - "8200:8200"
-    command: echo "SITL placeholder container"
+    init: true
+    restart: unless-stopped
+    environment:
+      HOME_LAT: ${HOME_LAT:-37.4000}
+      HOME_LON: ${HOME_LON:--122.0800}
+      HOME_ALT_M: ${HOME_ALT_M:-20}
+      HOME_YAW_DEG: ${HOME_YAW_DEG:-0}
+    entrypoint: ["/bin/sh"]
+    command:
+      - -ec
+      - 'exec sim_vehicle.py -v ArduCopter -f quad --no-rebuild --custom-location="$${HOME_LAT},$${HOME_LON},$${HOME_ALT_M},$${HOME_YAW_DEG}" --out=udp:127.0.0.1:14550 --out=udp:127.0.0.1:14551 --out=udp:host.docker.internal:14551 --out=udp:host.docker.internal:14552'
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    security_opt:
+      - no-new-privileges:true
+    healthcheck:
+      test:
+        - CMD
+        - python3
+        - /sim/tools/check_hb.py
+        - --in-container
+        - --connect
+        - udpin:127.0.0.1:14550
+        - --timeout
+        - "2"
+      interval: 2s
+      timeout: 3s
+      retries: 20
+      start_period: 10s
 
   bridge:
     image: python:3.11-slim

@@ -1,0 +1,13 @@
+[build-system]
+requires = ["setuptools==80.9.0"]
+build-backend = "setuptools.build_meta"
+[project]
+name = "gcs-simctl"
+version = "0.1.0"
+requires-python = ">=3.11"
+dependencies = ["pymavlink==2.4.50"]
+[project.scripts]
+simctl = "simctl.faults:main"
+replay = "replay.cli:main"
+[tool.setuptools]
+packages = ["replay", "simctl"]

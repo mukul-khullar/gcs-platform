@@ -22,7 +22,7 @@ typecheck:
 
 .PHONY: sim-up sim-down
 sim-up:
-	docker compose up -d sitl
+	docker compose up --build --detach --wait --wait-timeout 60 sitl
 
 sim-down:
 	docker compose stop sitl

@@ -1,0 +1,60 @@
+name: gps_loss_at_40s
+duration_s: 60.0
+home:
+  lat_deg: 37.4000
+  lon_deg: -122.0800
+  alt_m: 20.0
+  yaw_deg: 0.0
+vehicle_params:
+  SIM_WIND_SPD: 0.0
+  FENCE_ENABLE: 1
+timeline:
+  - t_s: 0.0
+    action:
+      type: command
+      name: set_mode_guided
+  - t_s: 1.0
+    action:
+      type: command
+      name: arm
+  - t_s: 2.0
+    action:
+      type: command
+      name: takeoff
+      alt_rel_m: 8.0
+  - t_s: 6.0
+    action:
+      type: wait_for
+      condition: takeoff_complete
+      timeout_s: 10.0
+  - t_s: 10.0
+    action:
+      type: command
+      name: goto
+      north_m: 8.0
+      east_m: 0.0
+      alt_rel_m: 8.0
+  - t_s: 15.0
+    action:
+      type: command
+      name: goto
+      north_m: 8.0
+      east_m: 8.0
+      alt_rel_m: 8.0
+  - t_s: 40.0
+    action:
+      type: fault
+      subsystem: gps
+      fault: lost
+      duration_s: 15.0
+  - t_s: 45.0
+    action:
+      type: command
+      name: goto
+      north_m: 0.0
+      east_m: 8.0
+      alt_rel_m: 8.0
+  - t_s: 52.0
+    action:
+      type: command
+      name: land
