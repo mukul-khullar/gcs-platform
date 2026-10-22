@@ -19,3 +19,10 @@ lint:
 
 typecheck:
 	@echo "Running type checkers..."
+
+.PHONY: sim-up sim-down
+sim-up:
+	docker compose up -d sitl
+
+sim-down:
+	docker compose stop sitl
