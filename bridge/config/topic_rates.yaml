@@ -1,0 +1,7 @@
+telemetry.attitude: 20
+telemetry.position: 10
+vehicle.status: 1
+health.summary: 1
+anomaly.event: null
+mission.proposal: null
+mission.state: null
