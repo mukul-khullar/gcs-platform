@@ -1,8 +1,12 @@
-# Global contract requires unanimous agreement
-/contracts/ @mukulkhullar
+# Last matching pattern wins, so keep the catch-all first.
+*                   @mukul-khullar
 
-# Vertical Ownership Slices
-/sim/ @mukulkhullar
-/bridge/ @mukulkhullar
-/optimizer/ @mukulkhullar
-/web/ @mukulkhullar
+# Lane owners (replace with real GitHub usernames)
+/sim/               @mukul-khullar
+/bridge/            @mukul-khullar
+/optimizer/         @Pranavmadaan3234 @mukul-khullar
+/web/               @mrzuri-afk @mukul-khullar
+/tools/mock_server/ @mrzuri-afk @mukul-khullar
+
+# Contracts need all four
+/contracts/         @mukul-khullar @Pranavmadaan3234 @mrzuri-afk
