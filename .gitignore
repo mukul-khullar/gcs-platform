@@ -1,0 +1,33 @@
+# Python (Bridge & Optimizer)
+__pycache__/
+*.pyc
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+*.egg-info/
+dist/
+build/
+
+# Node.js & TypeScript (Frontend & Mock Server)
+node_modules/
+.vite/
+.next/
+
+# Flight Logs, Recordings & Large Binaries (Keep out of git)
+data/logs/*.mcap
+*.tlog
+*.bin
+sim/corpus/manifest.json.lock
+
+# IDEs and Operating System Files
+.DS_Store
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Environment Variables & Local Secrets
+.env
+.env.local

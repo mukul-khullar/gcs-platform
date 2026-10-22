@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  sitl:
+    image: python:3.11-slim
+    container_name: gcs_sitl
+    ports:
+      - "14551:14551/udp"
+      - "14552:14552/udp"
+      - "8200:8200"
+    command: echo "SITL placeholder container"
+
+  bridge:
+    image: python:3.11-slim
+    container_name: gcs_bridge
+    ports:
+      - "8000:8000"
+    command: echo "Bridge placeholder container"
+
+  optimizer:
+    image: python:3.11-slim
+    container_name: gcs_optimizer
+    ports:
+      - "8100:8100"
+    command: echo "Optimizer placeholder container"
+
+  web:
+    image: node:20-alpine
+    container_name: gcs_web
+    ports:
+      - "8080:8080"
+      - "5173:5173"
+    command: echo "Web UI placeholder container"
