@@ -1,0 +1,1 @@
+{"request_id":"demo-1","status":"ok","waypoints":[{"seq":0,"lat_deg":31.6340,"lon_deg":74.8723,"alt_rel_m":30,"speed_mps":8},{"seq":1,"lat_deg":31.6350,"lon_deg":74.8735,"alt_rel_m":30,"speed_mps":8}],"metrics":{"length_m":180,"eta_s":24,"energy_wh":3.1,"min_clearance_m":22},"violations":[],"explain":["rerouted around NFZ-1; clearance 22 m"],"solve_ms":120}
