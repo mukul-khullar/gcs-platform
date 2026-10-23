@@ -39,7 +39,7 @@ export function PlanPanel() {
     const start = position
       ? { lat_deg: position.lat_deg, lon_deg: position.lon_deg, alt_rel_m: position.alt_rel_m }
       : { lat_deg: 31.634, lon_deg: 74.8723, alt_rel_m: 30 }
-    logAudit('PLAN · SUBMIT', 'INFO', 'Submitting demo-profile mission plan request')
+    logAudit('PLAN · SUBMIT', 'INFO', 'Submitting illustrative-profile mission plan request')
     try {
       const response = await submitPlan(buildDemoPlanRequest(start))
       setRequestedId(response.proposal_id)
@@ -76,14 +76,14 @@ export function PlanPanel() {
         <div><p className="eyebrow">ROUTE OPTIMIZATION</p><h2>Mission proposal</h2></div>
         <span className="panel__index">06</span>
       </div>
-      <div className="demo-profile-warning" role="note">
-        DEMO PROFILE · Illustrative vehicle, goal, geofence, and wind values. Not flight validated.
+      <div className="illustrative-profile-note" role="note">
+        ILLUSTRATIVE PROFILE · Sample vehicle, goal, geofence, and wind values. Not flight validated.
       </div>
       <p className="plan-profile-detail">
-        Start uses live position when available. The demo profile supplies a sample goal, vehicle capacity, altitude limits, geofence and no-fly area.
+        Start uses live position when available. This profile supplies a sample goal, vehicle capacity, altitude limits, geofence and no-fly area.
       </p>
       <button className="plan-button" type="button" onClick={() => void createPlan()} disabled={busy}>
-        {busy ? 'WORKING…' : 'GENERATE DEMO PLAN'}
+        {busy ? 'WORKING…' : 'GENERATE SAMPLE PLAN'}
       </button>
       {error && <p className="operation-error" role="alert">{error}</p>}
       {waitingForProposal && <p className="plan-waiting">Waiting for proposal details from telemetry…</p>}

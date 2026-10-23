@@ -4,7 +4,7 @@ import { recordFrame, useTelemetryStore } from './telemetryStore'
 const INITIAL_RETRY_MS = 500
 const MAX_RETRY_MS = 15000
 
-function websocketUrl(): string {
+export function telemetryWebSocketUrl(): string {
   const configuredUrl = import.meta.env.VITE_TELEMETRY_WS_URL as string | undefined
   if (configuredUrl) return configuredUrl
   const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:'
@@ -22,7 +22,7 @@ export function connectTelemetry(): () => void {
   const connect = () => {
     if (stopped) return
     store.setLinkState(retryDelay === INITIAL_RETRY_MS ? 'connecting' : 'reconnecting')
-    const connection = new WebSocket(websocketUrl())
+    const connection = new WebSocket(telemetryWebSocketUrl())
     socket = connection
 
     connection.addEventListener('open', () => {

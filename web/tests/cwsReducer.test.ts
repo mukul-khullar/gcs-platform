@@ -12,10 +12,12 @@ const health = (state: 'GO' | 'CAUTION' | 'WARNING' | 'CRITICAL', reasons: strin
 describe('CWS reducer', () => {
   it('latches an annunciator and does not flash repeats at the same severity', () => {
     const first = reduceCws([], health('CAUTION', ['variance 0.6']), 100)
+    const timestamped = reduceCws([], health('WARNING'), 200, 1700000000000)
     const repeated = reduceCws(first, health('CAUTION', ['variance 0.6']), 200)
 
     expect(first).toHaveLength(1)
     expect(first[0]).toMatchObject({ id: 'health:ekf', active: true, acknowledged: false, escalation: 1 })
+    expect(timestamped[0].eventTimeMs).toBe(1700000000000)
     expect(repeated[0].escalation).toBe(1)
   })
 

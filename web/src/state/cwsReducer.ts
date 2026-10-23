@@ -10,6 +10,7 @@ export type CwsItem = {
   title: string
   detail: string
   receivedAt: number
+  eventTimeMs: number
   active: boolean
   acknowledged: boolean
   escalation: number
@@ -31,12 +32,14 @@ const severityRank: Record<CwsSeverity, number> = {
 
 function upsert(
   items: CwsItem[],
-  input: Omit<CwsItem, 'active' | 'acknowledged' | 'escalation'>,
+  input: Omit<CwsItem, 'active' | 'acknowledged' | 'escalation' | 'eventTimeMs'>,
+  eventTimeMs: number,
 ): CwsItem[] {
   const existing = items.find((item) => item.id === input.id)
   const escalated = existing !== undefined && severityRank[input.severity] > severityRank[existing.severity]
   const item: CwsItem = {
     ...input,
+    eventTimeMs,
     active: true,
     acknowledged: escalated ? false : (existing?.acknowledged ?? false),
     escalation: existing ? existing.escalation + (escalated ? 1 : 0) : 1,
@@ -44,7 +47,7 @@ function upsert(
   return [...items.filter((current) => current.id !== input.id), item]
 }
 
-function reduceHealth(items: CwsItem[], data: HealthData, receivedAt: number): CwsItem[] {
+function reduceHealth(items: CwsItem[], data: HealthData, receivedAt: number, eventTimeMs: number): CwsItem[] {
   const activeIds = new Set(
     Object.entries(data.subsystems)
       .filter(([, subsystem]) => subsystem.state !== 'GO')
@@ -52,7 +55,7 @@ function reduceHealth(items: CwsItem[], data: HealthData, receivedAt: number): C
   )
   let next = items.map((item) =>
     item.source === 'health' && !activeIds.has(item.id)
-      ? { ...item, active: false, receivedAt }
+      ? { ...item, active: false, receivedAt, eventTimeMs }
       : item,
   )
   next = next.filter((item) => item.active || !item.acknowledged)
@@ -66,13 +69,13 @@ function reduceHealth(items: CwsItem[], data: HealthData, receivedAt: number): C
       title: `${name.toUpperCase()} ${subsystem.state}`,
       detail: subsystem.reasons.join(' · ') || `${name.toUpperCase()} reports ${subsystem.state}`,
       receivedAt,
-    })
+    }, eventTimeMs)
   }
   return next
 }
 
-export function reduceCws(items: CwsItem[], event: CwsEvent, receivedAt: number): CwsItem[] {
-  if (event.type === 'health.summary') return reduceHealth(items, event.data, receivedAt)
+export function reduceCws(items: CwsItem[], event: CwsEvent, receivedAt: number, eventTimeMs = receivedAt): CwsItem[] {
+  if (event.type === 'health.summary') return reduceHealth(items, event.data, receivedAt, eventTimeMs)
   if (event.type === 'anomaly.event') {
     if (event.data.severity === 'GO') return items
     return upsert(items, {
@@ -82,7 +85,7 @@ export function reduceCws(items: CwsItem[], event: CwsEvent, receivedAt: number)
       title: `ANOMALY ${event.data.id}`,
       detail: event.data.explanation,
       receivedAt,
-    })
+    }, eventTimeMs)
   }
 
   return event.data.violations.reduce(
@@ -93,7 +96,7 @@ export function reduceCws(items: CwsItem[], event: CwsEvent, receivedAt: number)
       title: `PLAN ${violation.code}`,
       detail: violation.message,
       receivedAt,
-    }),
+    }, eventTimeMs),
     items,
   )
 }
