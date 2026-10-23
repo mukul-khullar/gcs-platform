@@ -1,0 +1,102 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://gcs-platform.local/schemas/telemetry-frame-v1.json",
+  "title": "TelemetryFrame",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["v", "type", "seq", "sysid", "t_wall_ms", "t_boot_ms", "data"],
+  "properties": {
+    "v": {"const": 1},
+    "type": {
+      "enum": [
+        "telemetry.attitude",
+        "telemetry.position",
+        "vehicle.status",
+        "health.summary",
+        "anomaly.event",
+        "mission.proposal",
+        "mission.state"
+      ]
+    },
+    "seq": {"type": "integer", "minimum": 0},
+    "sysid": {"type": "integer", "minimum": 1, "maximum": 255},
+    "t_wall_ms": {"type": "integer", "minimum": 0},
+    "t_boot_ms": {"type": "integer", "minimum": 0},
+    "data": {"type": "object"}
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"type": {"const": "telemetry.attitude"}}},
+      "then": {
+        "properties": {
+          "data": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["roll_rad", "pitch_rad", "yaw_rad", "rates_rps"],
+            "properties": {
+              "roll_rad": {"type": "number"},
+              "pitch_rad": {"type": "number"},
+              "yaw_rad": {"type": "number"},
+              "rates_rps": {
+                "type": "array",
+                "items": {"type": "number"},
+                "minItems": 3,
+                "maxItems": 3
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {"properties": {"type": {"const": "telemetry.position"}}},
+      "then": {
+        "properties": {
+          "data": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "lat_deg",
+              "lon_deg",
+              "alt_msl_m",
+              "alt_rel_m",
+              "vel_ned_mps",
+              "heading_deg"
+            ],
+            "properties": {
+              "lat_deg": {"type": "number"},
+              "lon_deg": {"type": "number"},
+              "alt_msl_m": {"type": "number"},
+              "alt_rel_m": {"type": "number"},
+              "vel_ned_mps": {
+                "type": "array",
+                "items": {"type": "number"},
+                "minItems": 3,
+                "maxItems": 3
+              },
+              "heading_deg": {"type": ["number", "null"]}
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {"properties": {"type": {"const": "vehicle.status"}}},
+      "then": {
+        "properties": {
+          "data": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["armed", "mode", "system_status", "mission_seq"],
+            "properties": {
+              "armed": {"type": "boolean"},
+              "mode": {"type": "string"},
+              "system_status": {"type": "integer"},
+              "mission_seq": {"type": ["integer", "null"]}
+            }
+          }
+        }
+      }
+    }
+  ]
+}
