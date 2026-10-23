@@ -1,0 +1,55 @@
+:root {
+  color-scheme: dark;
+  --bg: #171a18;
+  --panel: #202421;
+  --panel-raised: #252a26;
+  --line: #343a35;
+  --line-strong: #4a524b;
+  --text: #b9c0b8;
+  --text-dim: #899289;
+  --text-bright: #edf0e9;
+  --green: #a6d66b;
+  --amber: #e8b354;
+  --red: #ee766d;
+  --cyan: #72c6b8;
+  --sans: Inter, "Segoe UI", sans-serif;
+  --mono: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+
+  font-family: var(--sans);
+  color: var(--text);
+  background:
+    linear-gradient(rgba(143, 157, 143, 0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(143, 157, 143, 0.025) 1px, transparent 1px),
+    var(--bg);
+  background-size: 32px 32px;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-optical-sizing: auto;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  min-width: 320px;
+  min-height: 100vh;
+  margin: 0;
+}
+
+button,
+input {
+  font: inherit;
+}
+
+::selection {
+  color: #171a18;
+  background: var(--green);
+}
+
+:focus-visible {
+  outline: 2px solid var(--green);
+  outline-offset: 3px;
+}
