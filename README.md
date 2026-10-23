@@ -11,4 +11,3 @@ Custom MAVLink ground control station with a companion-computer intelligence lay
 2. Start the stack and verify:
 docker compose up -d
 docker compose ps
-EOF
